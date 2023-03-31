@@ -10,10 +10,18 @@ spec:
   rules:
   - http:
       paths:
-      - pathType: Prefix
+      - path: /production
+        pathType: Prefix
         path: /
         backend:
           service:
             name: loadvoteapp
             port:
               number: 80
+      - path: /canary
+        pathType: Prefix
+        beckend: 
+          service: 
+           name: canary-service
+           port:
+            name: http
