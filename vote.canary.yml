@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-canary
+  labels:
+    app: vote-canarylb
+spec:
+  selector:
+    matchLabels:
+      app: vote-canarylb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: vote-canarylb
+    spec:
+      containers:
+      - name: vote-canary
+        image: raja8/vote-app:TAGR
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "250m"
+          limits:
+            cpu: "500m"
+        env:
+        - name: REDIS
+          value: "clustredis"
+        - name: STRESS_SECS
+          value: "2"
+        - name: REDIS_PWD
+          valueFrom:
+            secretKeyRef:
+              name: redispw
+              key: password
